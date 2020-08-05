@@ -15,6 +15,11 @@ import routes from './routes';
 // Módulo de roteamento do express.
 const app = express();
 
+// Permite a a aplicação possa ser acessada
+// externamente por outra aplicação.
+// Quando estiver em ambiente de execução
+// o endereço deve ser adicionado como parâmetro
+// em de "cors()".
 app.use(cors());
 
 /* Converte o JSON para objeto JS.*/

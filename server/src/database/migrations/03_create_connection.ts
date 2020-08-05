@@ -16,7 +16,7 @@ export async function up(knex: Knex) {
     /* Quando ocorreu a conexão. */
     table.timestamp('created_at')
       /* Pegar o horário atual. */
-      .defaultTo('now()') // Para PostgresQL e 
+      //.defaultTo('now()') // Para PostgresQL e MySQL
       .defaultTo(knex.raw('CURRENT_TIMESTAMP')) // SQLite
       .notNullable();
   });

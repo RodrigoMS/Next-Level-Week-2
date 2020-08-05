@@ -31,13 +31,25 @@ export default class ClassesController {
     const timeInMinutes = convertHourToMinutes(time);
 
     const classes = await db('classes')
+      /* whereExists - Criar uma subconsulta dentro da query,
+         verificando se existe cadastros do usuário dentro da
+         tabela class_schedule.
+
+         Caso não tiver retrona false. */
       .whereExists(function() {
+        /* * - indica que são todos os registros. */
         this.select('class_schedule.*')
         .from('class_schedule')
+        /* Verifica se existe o ID.*/
         .whereRaw('`class_schedule`.`class_id` = `classes`.`id`')
+        /* Verifia o dia do atendimento do professor.*/
         .whereRaw('`class_schedule`.`week_day` = ??', [Number(week_day)])
+        /* Verifica o horário com base no horário inicial de atendimento. */
         .whereRaw('`class_schedule`.`from` <= ??', [timeInMinutes])
+        /* Verifica o horário com base no horário final de atendimetnos. */
         .whereRaw('`class_schedule`.`to` > ??', [timeInMinutes])
+        /*OBS: ?? será o segindo parâmetro do método. */
+        /*     tabelas e colunas dever estar entre acentos crase. */
       })
       .where('classes.subject', '=', subject)
       .join('users', 'classes.user_id', '=', 'users.id')
