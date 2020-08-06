@@ -1,38 +1,58 @@
 import React from 'react';
 
-import whatsappIcon from '../../assets/images/icons/whatsapp.svg'
+import whatsappIcon from '../../assets/images/icons/whatsapp.svg';
+import api from '../../services/api';
 
-import'./styles.css';
+import './styles.css';
 
-const TeacherItem: React.FC = () => {
+export interface Teacher {
+  avatar: string;
+  bio: string;
+  cost: number;
+  id: number;
+  name: string;
+  subject: string;
+  whatsapp: string;
+}
+
+interface TeacherItemProps {
+  teacher: Teacher
+}
+
+const TeacherItem: React.FC<TeacherItemProps> = ({ teacher }) => {
+ function createNewConnection() {
+   api.post('connections', {
+     user_id: teacher.id
+   })
+ }
+
   return (
     <article className="teacher-item">
-      <header>
-        <img src="https://avatars3.githubusercontent.com/u/2126218?s=460&u=7ab930065593117c109609eae7f25878d3e9b08d&v=4" alt="Rodrigo M. S."/>
-        <div>
-          <strong>Rodrigo M. S.</strong>
-          <span>Programming</span>
-        </div>
-      </header>
+            <header>
+              <img src={teacher.avatar} alt={teacher.name}/>
+              <div>
+                <strong>{teacher.name}</strong>
+                <span>{teacher.subject}</span>
+              </div>  
+            </header>
 
-      <p>
-        Atuante da área de desenvolvimento de softwares desde 2013. 
-        <br/> <br/>
-        Linguagens estudadas até o momento: PHP, NodeJS, GO. 
-      </p>
-
-      <footer>
-        <p>
-          Preço/hora
-          <strong>R$ 80,00</strong>
-        </p>
-        <button type="button" >
-          <img src={whatsappIcon} alt="WhatsApp"/>
-          Entrar em contato
-        </button>
-      </footer>
-    </article>
-  );
+            <p>{teacher.bio}</p>
+            <footer>
+              <p>
+                Preço/hora 
+                <strong>{teacher.cost}</strong>
+              </p>
+              <a 
+                target="_black" 
+                onClick={createNewConnection} 
+                href={`https://wa.me/${teacher.whatsapp}`}
+              >
+                <img src={whatsappIcon} alt="whatsapp"/>
+                Entrar em contacto
+              </a>
+            </footer>
+          </article>
+  )
 }
 
 export default TeacherItem;

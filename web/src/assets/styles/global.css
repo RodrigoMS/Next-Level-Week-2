@@ -1,9 +1,4 @@
 :root {
-  /* Ao modificar o font-size, altera
-     o tamanho dos elementos.
-     Ideal para acessibilidade. */
-  font-size: 60%;
-
   --color-background: #F0F0F7;
   --color-primary-lighter: #9871F5;
   --color-primary-light: #916BEA;
@@ -22,6 +17,8 @@
   --color-button-text: #FFFFFF;
   --color-box-base: #FFFFFF;
   --color-box-footer: #FAFAFC;
+
+  font-size: 60%;
 }
 
 * {
@@ -31,7 +28,6 @@
 }
 
 html, body, #root {
-  /* Página ocupar sempre 100% da página. */
   height: 100vh;
 }
 
@@ -40,8 +36,6 @@ body {
 }
 
 #root {
-  /* Combinando display flex com align-items
-     se tem todos os lementos alinhados ao centro.*/
   display: flex;
   align-items: center;
   justify-content: center;
@@ -51,10 +45,6 @@ body,
 input, 
 button,
 textarea {
-  /*rem - tamanho da fonte. Colocar 60% 
-    a mais que a interface em que esta
-    sendo exibida.
-    1 rem = 10px. */
   font: 500 1.6rem Poppins;
   color: var(--color-text-base);
 }
