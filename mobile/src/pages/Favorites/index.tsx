@@ -1,21 +1,56 @@
-import React from 'react';
-import { View, Text } from 'react-native';
-import { RectButton } from 'react-native-gesture-handler';
-import PageHeader from '../../components/PageHeader';
+import React, { useState } from 'react'
+import { View, ScrollView } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 
-import styles from './styles';
+/* Faz com que a função execute toda vez que a tela ficar em foco. */
+import { useFocusEffect } from '@react-navigation/native'
 
-import { useNavigation } from '@react-navigation/native';
+import PageHeader from '../../components/PageHeader'
+import TeacherItem, { Teacher } from '../../components/TeacherItem'
+
+import styles from './styles'
 
 function Favorites() {
-  
-  const { goBack } = useNavigation();
+    const [favorites, setFavorites] = useState([])
 
-  return (
-    <View style={styles.container}>
-      <PageHeader title="Meus proffys favoritos"/>
-    </View>
-  );
-};
+    function loadFavorites() {
+        AsyncStorage.getItem('favorites').then(res => {
+            if (res) {
+                const favoritedTeachers = JSON.parse(res)
 
-export default Favorites;
+                setFavorites(favoritedTeachers)
+            }
+        })
+    }
+
+    // Roda toda vez que a tela entra em 'foco'
+    useFocusEffect(
+        React.useCallback(() => {
+            loadFavorites()
+        }, [])
+    )
+
+    return (
+        <View style={styles.container}>
+            <PageHeader title="Meus Proffys favoritos" />
+
+            <ScrollView
+                style={styles.teacherList}
+                contentContainerStyle={{
+                    paddingHorizontal: 16,
+                    paddingBottom: 16
+                }}
+            >
+                {favorites.map((teacher: Teacher) => {
+                    return <TeacherItem
+                        key={teacher.id}
+                        teacher={teacher}
+                        favorited={true}
+                    />
+                })}
+            </ScrollView>
+        </View>
+    )
+}
+
+export default Favorites

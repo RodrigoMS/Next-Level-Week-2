@@ -1,36 +1,47 @@
-import React from 'react';
-import { View, Image, Text } from 'react-native';
-import { BorderlessButton } from 'react-native-gesture-handler';
+import React, { ReactNode } from 'react'
+import { Text, Image, View } from 'react-native'
+import { BorderlessButton } from 'react-native-gesture-handler'
 
-import styles from './styles';
+import logoImg from '../../assets/images/logo.png'
+import backIcon from '../../assets/images/icons/back.png'
 
-import backIcon from '../../assets/images/icons/back.png';
-import logoImage from '../../assets/images/logo.png';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native'
 
-interface PageHeaderProps{
-  title: string;
+import styles from './styles'
+
+interface PageHeaderProps {
+    title: string;
+
+    /* Recebe um componente com uma propriedade.
+       ? - indica que é opcional. */
+    headerRight?: ReactNode;
 }
 
-const PageHeader: React.FC<PageHeaderProps> = ({ title }) => {
-  const { navigate } = useNavigation();
+const PageHeader: React.FC<PageHeaderProps> = ({ title, headerRight, children }) => {
+    const { navigate } = useNavigation()
 
-  function handleGoBak() {
-    navigate('Landing ');
-  }
+    function handleGoBack() {
+        navigate('Landing')
+    }
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.topBar}>
-        <BorderlessButton onPress={handleGoBak}>
-          <Image source={backIcon} resizeMode="contain"/>
-        </BorderlessButton>
+    return (
+        <View style={styles.container}>
+            <View style={styles.topBar}>
+                <BorderlessButton onPress={handleGoBack}>
+                    <Image source={backIcon} resizeMode="contain" />
+                </BorderlessButton>
 
-        <Image source={logoImage} resizeMode="contain" />
-      </View>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-  );
+                <Image source={logoImg} resizeMode="contain" />
+            </View>
+
+            <View style={styles.header}>
+                <Text style={styles.title}>{title}</Text>
+                {headerRight}
+            </View>
+
+            {children}
+        </View>
+    )
 }
 
-export default PageHeader;
+export default PageHeader
